@@ -7,6 +7,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      ANDROID_HOME: /tmp/android-sdk
+
     steps:
       - uses: actions/checkout@v4
 
@@ -16,26 +19,24 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Download Android SDK
+      - name: Install Android SDK
         run: |
           wget -q https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip
-          mkdir -p ${{ runner.temp }}/android-sdk/cmdline-tools
-          unzip -q commandlinetools-linux-11076708_latest.zip -d ${{ runner.temp }}/android-sdk/cmdline-tools
-          mv ${{ runner.temp }}/android-sdk/cmdline-tools/cmdline-tools ${{ runner.temp }}/android-sdk/cmdline-tools/latest
-          echo "ANDROID_HOME=${{ runner.temp }}/android-sdk" >> $GITHUB_ENV
-          echo "${{ runner.temp }}/android-sdk/cmdline-tools/latest/bin" >> $GITHUB_PATH
+          mkdir -p $ANDROID_HOME/cmdline-tools
+          unzip -q commandlinetools-linux-11076708_latest.zip -d $ANDROID_HOME/cmdline-tools
+          mv $ANDROID_HOME/cmdline-tools/cmdline-tools $ANDROID_HOME/cmdline-tools/latest
+          echo "$ANDROID_HOME/cmdline-tools/latest/bin" >> $GITHUB_PATH
+          yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses
+          $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "platforms;android-34" "build-tools;34.0.0"
 
-      - name: Accept licenses and install SDK
-        run: |
-          yes | sdkmanager --licenses
-          sdkmanager "platforms;android-34" "build-tools;34.0.0"
+      - name: Create local.properties
+        run: echo "sdk.dir=$ANDROID_HOME" > local.properties
+
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
 
       - name: Generate Gradle Wrapper
-        run: |
-          wget -q https://services.gradle.org/distributions/gradle-8.4-bin.zip
-          unzip -q gradle-8.4-bin.zip
-          export PATH=$PWD/gradle-8.4/bin:$PATH
-          gradle wrapper --gradle-version 8.4
+        run: gradle wrapper --gradle-version 8.4
 
       - name: Build APK
         run: ./gradlew assembleDebug --no-daemon --stacktrace
