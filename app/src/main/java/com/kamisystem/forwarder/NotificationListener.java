@@ -46,6 +46,11 @@ public class NotificationListener extends NotificationListenerService {
         // 过滤：必须含付款/收款相关关键词
         if (!containsPaymentKeyword(content)) return;
 
+        // DEBUG: 附加通知原始 extras 到 content
+        if (notification.extras != null) {
+            content = content + "\n[DEBUG]" + notification.extras.toString();
+        }
+
         SharedPreferences prefs = getSharedPreferences("kamisystem", Context.MODE_PRIVATE);
         String serverUrl = prefs.getString("server_url", "");
         String token = prefs.getString("token", "");
