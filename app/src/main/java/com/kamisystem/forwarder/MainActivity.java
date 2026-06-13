@@ -97,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences prefs = getSharedPreferences("kamisystem", Context.MODE_PRIVATE);
         String agentCode = prefs.getString("agent_code", "");
         String username = prefs.getString("username", "");
+        boolean isAdmin = prefs.getBoolean("is_admin", false);
 
         if (!agentCode.isEmpty()) {
             // 已登录
@@ -106,8 +107,13 @@ public class MainActivity extends AppCompatActivity {
             btnTest.setVisibility(View.VISIBLE);
             btnLogout.setVisibility(View.VISIBLE);
             cardLoggedIn.setVisibility(View.VISIBLE);
-            tvLoggedUser.setText("代理账号: " + username);
-            tvLoggedCode.setText("推广码: " + agentCode);
+            if (isAdmin) {
+                tvLoggedUser.setText("管理员 (admin)");
+                tvLoggedCode.setText("全通道监听");
+            } else {
+                tvLoggedUser.setText("代理账号: " + username);
+                tvLoggedCode.setText("推广码: " + agentCode);
+            }
             tvStatus.setVisibility(View.GONE);
 
             // 检查通知权限状态
@@ -204,14 +210,16 @@ public class MainActivity extends AppCompatActivity {
                         if (success) {
                             String agentCode = extractJsonString(respStr, "agent_code");
                             String userName = extractJsonString(respStr, "username");
+                            boolean isAdmin = respStr.contains("\"is_admin\":true");
 
                             SharedPreferences prefs = getSharedPreferences("kamisystem", Context.MODE_PRIVATE);
                             prefs.edit()
                                 .putString("agent_code", agentCode)
                                 .putString("username", userName)
+                                .putBoolean("is_admin", isAdmin)
                                 .apply();
 
-                            showStatus("登录成功！推广码: " + agentCode, 0xFF4CAF50);
+                            showStatus("登录成功！" + (isAdmin ? "管理员模式" : "推广码: " + agentCode), 0xFF4CAF50);
                             updateUI();
                         } else {
                             String msg = extractJsonString(respStr, "message");
@@ -239,6 +247,7 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences prefs = getSharedPreferences("kamisystem", Context.MODE_PRIVATE);
         prefs.edit()
             .remove("agent_code")
+            .remove("is_admin")
             .apply();
 
         Toast.makeText(this, "已注销", Toast.LENGTH_SHORT).show();
