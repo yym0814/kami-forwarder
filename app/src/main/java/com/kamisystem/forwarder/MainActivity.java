@@ -99,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
         String username = prefs.getString("username", "");
         boolean isAdmin = prefs.getBoolean("is_admin", false);
 
-        if (!agentCode.isEmpty()) {
+        if (!agentCode.isEmpty() || isAdmin) {
             // 已登录
             tvSubtitle.setText("服务运行中");
             btnLogin.setVisibility(View.GONE);
