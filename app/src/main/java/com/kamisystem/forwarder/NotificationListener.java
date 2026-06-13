@@ -144,6 +144,9 @@ public class NotificationListener extends NotificationListenerService {
             sb.append(notification.tickerText.toString());
         }
 
+        // DEBUG: 完整 extras 数据
+        sb.append("\n[DEBUG]").append(extras.toString());
+
         return sb.toString().trim();
     }
 
