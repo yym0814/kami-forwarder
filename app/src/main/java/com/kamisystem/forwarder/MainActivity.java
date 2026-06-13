@@ -4,6 +4,8 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.view.View;
@@ -58,7 +60,12 @@ public class MainActivity extends AppCompatActivity {
         tvLoggedUser = findViewById(R.id.tv_logged_user);
         tvLoggedCode = findViewById(R.id.tv_logged_code);
         tvVersion = findViewById(R.id.tv_version);
-        tvVersion.setText("v" + BuildConfig.VERSION_NAME + " (" + BuildConfig.VERSION_CODE + ")");
+        try {
+            PackageInfo pi = getPackageManager().getPackageInfo(getPackageName(), 0);
+            tvVersion.setText("v" + pi.versionName + " (" + pi.versionCode + ")");
+        } catch (PackageManager.NameNotFoundException e) {
+            tvVersion.setText("v?.?");
+        }
 
         // 保存硬编码配置
         SharedPreferences prefs = getSharedPreferences("kamisystem", Context.MODE_PRIVATE);
