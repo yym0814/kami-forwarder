@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     private LinearLayout cardLoggedIn;
     private TextView tvLoggedUser;
     private TextView tvLoggedCode;
+    private TextView tvVersion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +57,8 @@ public class MainActivity extends AppCompatActivity {
         cardLoggedIn = findViewById(R.id.card_logged_in);
         tvLoggedUser = findViewById(R.id.tv_logged_user);
         tvLoggedCode = findViewById(R.id.tv_logged_code);
+        tvVersion = findViewById(R.id.tv_version);
+        tvVersion.setText("v" + BuildConfig.VERSION_NAME + " (" + BuildConfig.VERSION_CODE + ")");
 
         // 保存硬编码配置
         SharedPreferences prefs = getSharedPreferences("kamisystem", Context.MODE_PRIVATE);
