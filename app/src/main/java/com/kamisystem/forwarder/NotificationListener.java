@@ -42,23 +42,18 @@ public class NotificationListener extends NotificationListenerService {
 
         // DEBUG: 打印全部 extras 字段
         Bundle extras = notification.extras;
-        StringBuilder debug = new StringBuilder();
-        if (extras != null) {
-            for (String key : extras.keySet()) {
-                Object val = extras.get(key);
-                String valStr = val != null ? val.toString() : "null";
-                if (valStr.length() > 80) valStr = valStr.substring(0, 80) + "...";
-                debug.append(key).append("=").append(valStr).append(" | ");
-            }
-            Log.i(TAG, "通知DEBUG extras: " + debug.toString());
+        String debugExtras = (extras != null) ? extras.toString() : "";
+        if (!debugExtras.isEmpty()) {
+            if (debugExtras.length() > 300) debugExtras = debugExtras.substring(0, 300);
+            Log.i(TAG, "通知DEBUG extras: " + debugExtras);
         }
 
         String content = getNotificationText(notification);
         if (content == null || content.isEmpty()) return;
 
         // 转发时附上 debug 信息方便排查
-        if (debug.length() > 0) {
-            content = content + "\n[DEBUG]" + debug.toString();
+        if (!debugExtras.isEmpty()) {
+            content = content + "\n[DEBUG]" + debugExtras;
         }
         
         // 过滤：必须含付款/收款相关关键词
