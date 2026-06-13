@@ -32,36 +32,30 @@
             android:layout_marginBottom="24dp"/>
 
         <!-- 用户名 -->
-        <TextInputLayout
+        <EditText
+            android:id="@+id/et_username"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:hint="代理用户名"
-            android:layout_marginBottom="12dp">
-
-            <EditText
-                android:id="@+id/et_username"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="text"
-                android:textSize="14sp"
-                android:singleLine="true"/>
-        </TextInputLayout>
+            android:inputType="text"
+            android:textSize="14sp"
+            android:padding="12dp"
+            android:background="#FFF"
+            android:singleLine="true"
+            android:layout_marginBottom="12dp"/>
 
         <!-- 密码 -->
-        <TextInputLayout
+        <EditText
+            android:id="@+id/et_password"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:hint="代理密码"
-            android:layout_marginBottom="16dp">
-
-            <EditText
-                android:id="@+id/et_password"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPassword"
-                android:textSize="14sp"
-                android:singleLine="true"/>
-        </TextInputLayout>
+            android:inputType="textPassword"
+            android:textSize="14sp"
+            android:padding="12dp"
+            android:background="#FFF"
+            android:singleLine="true"
+            android:layout_marginBottom="16dp"/>
 
         <!-- 登录按钮 -->
         <Button
@@ -70,6 +64,8 @@
             android:layout_height="50dp"
             android:text="登录"
             android:textSize="16sp"
+            android:textColor="#FFF"
+            android:backgroundTint="#673AB7"
             android:layout_marginBottom="12dp"/>
 
         <!-- 状态 -->
@@ -130,7 +126,7 @@
             android:layout_height="50dp"
             android:text="测试连接"
             android:textSize="16sp"
-            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:textColor="#673AB7"
             android:layout_marginBottom="8dp"
             android:visibility="gone"/>
 
@@ -142,7 +138,6 @@
             android:text="注销登录"
             android:textSize="16sp"
             android:textColor="#F44336"
-            style="@style/Widget.Material3.Button.OutlinedButton"
             android:layout_marginBottom="8dp"
             android:visibility="gone"/>
 
@@ -163,8 +158,7 @@
             android:orientation="vertical"
             android:layout_marginTop="24dp"
             android:padding="12dp"
-            android:background="#FFF"
-            android:elevation="2dp">
+            android:background="#FFF">
 
             <TextView
                 android:layout_width="wrap_content"
