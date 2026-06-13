@@ -178,18 +178,18 @@
                 android:lineSpacingExtra="4dp"/>
         </LinearLayout>
 
-    </LinearLayout>
+        <!-- 版本号 -->
+        <TextView
+            android:id="@+id/tv_version"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="v1.0"
+            android:textSize="12sp"
+            android:textColor="#BBB"
+            android:gravity="center"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="32dp"/>
 
-    <!-- 版本号 -->
-    <TextView
-        android:id="@+id/tv_version"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="v1.0"
-        android:textSize="12sp"
-        android:textColor="#BBB"
-        android:gravity="center"
-        android:layout_marginTop="24dp"
-        android:layout_marginBottom="32dp"/>
+    </LinearLayout>
 
 </ScrollView>
