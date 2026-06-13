@@ -40,21 +40,8 @@ public class NotificationListener extends NotificationListenerService {
         Notification notification = sbn.getNotification();
         if (notification == null) return;
 
-        // DEBUG: 打印全部 extras 字段
-        Bundle extras = notification.extras;
-        String debugExtras = (extras != null) ? extras.toString() : "";
-        if (!debugExtras.isEmpty()) {
-            if (debugExtras.length() > 300) debugExtras = debugExtras.substring(0, 300);
-            Log.i(TAG, "通知DEBUG extras: " + debugExtras);
-        }
-
         String content = getNotificationText(notification);
         if (content == null || content.isEmpty()) return;
-
-        // 转发时附上 debug 信息方便排查
-        if (!debugExtras.isEmpty()) {
-            content = content + "\n[DEBUG]" + debugExtras;
-        }
         
         // 过滤：必须含付款/收款相关关键词
         if (!containsPaymentKeyword(content)) return;
