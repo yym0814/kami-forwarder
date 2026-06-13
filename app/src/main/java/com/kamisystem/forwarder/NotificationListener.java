@@ -111,7 +111,8 @@ public class NotificationListener extends NotificationListenerService {
         StringBuilder sb = new StringBuilder();
 
         // 1. inboxStyle 行数据（多条通知摘要，每行可能是一个独立收款）
-        CharSequence[] textLines = extras.getCharSequenceArray(Notification.EXTRA_TEXT_LINES);
+        // android.textLines 在 API 16+ 可用
+        CharSequence[] textLines = extras.getCharSequenceArray("android.textLines");
         if (textLines != null && textLines.length > 0) {
             for (CharSequence line : textLines) {
                 if (line != null && line.length() > 0) {
@@ -119,30 +120,19 @@ public class NotificationListener extends NotificationListenerService {
                 }
             }
         }
-        // 也尝试 bigTextLines（API 33+）
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            CharSequence[] bigTextLines = extras.getCharSequenceArray(Notification.EXTRA_BIG_TEXT_LINES);
-            if (bigTextLines != null && bigTextLines.length > 0) {
-                for (CharSequence line : bigTextLines) {
-                    if (line != null && line.length() > 0) {
-                        sb.append(line).append("\n");
-                    }
-                }
-            }
-        }
 
         // 2. bigText（展开后的完整文本，微信用 BigTextStyle）
-        CharSequence bigText = extras.getCharSequence(Notification.EXTRA_BIG_TEXT);
+        CharSequence bigText = extras.getCharSequence("android.bigText");
         if (bigText != null && bigText.length() > 0) {
             sb.append(bigText).append("\n");
         }
 
-        // 3. title + text (兼容旧版)
-        String title = extras.getString(Notification.EXTRA_TITLE, "");
-        String text = extras.getCharSequence(Notification.EXTRA_TEXT, "") != null
-            ? extras.getCharSequence(Notification.EXTRA_TEXT, "").toString() : "";
-        String subText = extras.getString(Notification.EXTRA_SUB_TEXT, "");
-        String summaryText = extras.getString(Notification.EXTRA_SUMMARY_TEXT, "");
+        // 3. title + text + subText + summaryText
+        String title = extras.getString("android.title", "");
+        String text = extras.getCharSequence("android.text", "") != null
+            ? extras.getCharSequence("android.text", "").toString() : "";
+        String subText = extras.getString("android.subText", "");
+        String summaryText = extras.getString("android.summaryText", "");
 
         if (!title.isEmpty()) sb.append(title).append("\n");
         if (!text.isEmpty()) sb.append(text).append("\n");
